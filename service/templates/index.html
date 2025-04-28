@@ -4,84 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма ввода чисел</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <div class="form-container">
-        <h2>Введите четыре числа</h2>
-        <form id="numberForm">
-            <input type="number" id="num1" placeholder="Площадь квартиры, м2" required>
-            <input type="number" id="num2" placeholder="Количество комнат" required>
-            <input type="number" id="num3" placeholder="Этажей в доме" required>
-            <input type="number" id="num4" placeholder="Этаж квартиры" required>
-            <button type="button" onclick="submitForm()">Отправить</button>
-        </form>
-        <div id="response"></div>
-    </div>
+    <header>
+        <h1>Покупка недвижимости в ДУБАЯХ</h1>
+    </header>
+    
+    <main>
+        <section class="form-section">
+            <h2>Введите характеристики вашей квартиры:</h2>
+            
+            <!-- Контейнер для формы -->
+            <form id="numberForm" novalidate>
+                <label for="area">Площадь квартиры, м²:</label><br>
+                <input type="number" id="area" name="area" min="1" step="any" required><br>
+                
+                <label for="rooms">Количество комнат:</label><br>
+                <input type="number" id="rooms" name="rooms" min="1" max="10" required><br>
+                
+                <label for="totalFloors">Всего этажей в доме:</label><br>
+                <input type="number" id="totalFloors" name="totalFloors" min="1" max="50" required><br>
+                
+                <label for="floor">Этаж квартиры:</label><br>
+                <input type="number" id="floor" name="floor" min="1" max="50" required><br>
+                
+                <button type="button" onClick="submitForm()">Отправить</button>
+            </form>
+            
+            <p id="response"></p>
+        </section>
+    </main>
 
-    <script>
-        function submitForm() {
-            const num1 = document.getElementById('num1').value;
-            const num2 = document.getElementById('num2').value;
-            const num3 = document.getElementById('num3').value;
-            const num4 = document.getElementById('num4').value;
+    <footer>
+        © Компания, ООО "Вадим Веб-разработчик"
+    </footer>
 
-            const data = {
-                area: num1,
-                rooms: num2,
-                total_floors: num3,
-                floor: num4
-            };
-
-            fetch('/api/numbers', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('response').innerText = 'Ответ сервера: ' + JSON.stringify(data);
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-                document.getElementById('response').innerText = 'Произошла ошибка при отправке данных';
-            });
-        }
-    </script>
+    <script src="/static/scripts.js"></script>
 </body>
-</head>
 </html>
