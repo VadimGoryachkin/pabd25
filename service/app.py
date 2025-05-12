@@ -17,7 +17,7 @@ dictConfig(
             },         
             "file": {
                 "class": "logging.FileHandler",
-                "filename": "service/flask.log",
+                "filename": "flask.log",
                 "formatter": "default",
             },
         },
@@ -41,7 +41,15 @@ def process_numbers():
     
     app.logger.info(f'Requst data: {data}')
     
-    return {'status': 'success', 'data': 'Числа успешно обработаны'}
+    if float(data['area']) >= 0:
+        app.logger.info('status: success, data: Числа успешно обработаны')
+        result_sum = float(data['area']) * 300000
+        app.logger.info(f'Стоимость квартиры: {result_sum}')
+        return {'result': result_sum}
+    else:
+        app.logger.info('status: error, data: Отрицательное значение площади')
+        return {'result': 'error'}
+    
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, port=5050)
