@@ -25,7 +25,7 @@ MODEL_NAME = "./models/linear_regression_model.pkl"
 
 raw_data_path = './data/raw'
 processed_data_path = './data/processed'
-X_cols = ['total_meters']  # только один признак - площадь
+X_cols = ['total_meters', 'floor', 'floors_count', 'rooms_count']
 y_cols = ['price']
 
 
@@ -65,7 +65,7 @@ def preprocess_data():
         main_dataframe = pd.concat([main_dataframe, df], axis=0)
 
     main_dataframe['url_id'] = main_dataframe['url'].map(lambda x: x.split('/')[-2])
-    data = main_dataframe[['url_id', 'total_meters', 'price']].set_index('url_id')
+    data = main_dataframe[['url_id', 'total_meters', 'price', 'floor', 'floors_count', 'rooms_count']].set_index('url_id')
     data = data[data['price'] < 100_000_000]
     data.sort_values('url_id', inplace=True)
     data.to_csv(f"{processed_data_path}/train_data.csv")
