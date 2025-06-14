@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import joblib
 from numpy.f2py.auxfuncs import throw_error
 import pandas as pd
+import xgboost as xgb
 
 dictConfig(
     {
@@ -60,9 +61,13 @@ def process_numbers():
             'rooms_count': [int(data['rooms'])],
         }
         input_df = pd.DataFrame(input_data)
-        predicted = loaded_model.predict(input_df)
+        d = xgb.DMatrix(input_df)
+        predicted = loaded_model.predict(d)
         price = predicted[0]
         price = int(price)
     except ValueError:
         return {'status': 'error', 'data': 'internal server error'}
     return {'status': 'success', 'data': price}
+
+if __name__ == '__main__':
+    app.run(debug=True)
