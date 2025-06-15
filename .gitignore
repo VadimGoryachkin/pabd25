@@ -1,3 +1,5 @@
 .venv
 data
 *.log
+.env
+src/__pycache__

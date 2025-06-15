@@ -5,6 +5,11 @@ import joblib
 from numpy.f2py.auxfuncs import throw_error
 import pandas as pd
 import xgboost as xgb
+import joblib
+from flask_httpauth import HTTPTokenAuth
+from dotenv import dotenv_values
+from flask_cors import CORS
+
 
 dictConfig(
     {
@@ -31,6 +36,16 @@ dictConfig(
 )
 
 app = Flask(__name__)
+cfg = dotenv_values('.env')
+auth = HTTPTokenAuth(scheme='Bearer')
+tokens = {cfg['APP_TOKEN']: "user1"}
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+@auth.verify_token
+def verify_token(token):
+    if token in tokens:
+        return tokens[token]
+
 
 @dataclass
 class HouseInfo:
@@ -50,6 +65,7 @@ def index():
 
 
 @app.route('/api/numbers', methods=['POST'])
+@auth.login_required
 def process_numbers():
     data = request.get_json()
     app.logger.info(f'Requst data: {data}')
